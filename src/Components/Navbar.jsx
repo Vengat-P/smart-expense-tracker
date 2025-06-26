@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav>
       <li className="navbar bg-neutral shadow-sm">
-        <Link to="/" className="btn btn-ghost text-xl text-white">
+        <Link to="/" className=" text-xl text-neutral-content">
           Expense Tracker
         </Link>
       </li>

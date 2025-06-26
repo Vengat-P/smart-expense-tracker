@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "../Context/userContext";
 
 const Home = () => {
   const { data, setData, formData, setFormData } = useContext(userContext);
-  useEffect(() => {}, [data]);
+  const [status, setStatus] = useState(true);
+  useEffect(() => {}, [data, status]);
   const handleSubmit = async (e) => {
     document.getElementById("my_modal_1").close();
     e.preventDefault();
@@ -22,9 +23,17 @@ const Home = () => {
 
     console.log(data);
   };
+  const handleDelete = (key) => {
+    data.splice(key, 1);
+    localStorage.setItem("data", JSON.stringify(data));
+    setData(() => {
+      const storedData = localStorage.getItem("data");
+      return storedData ? JSON.parse(storedData) : [];
+    });
+  };
   return (
     <>
-      <div className=" container grid grid-cols-2 gap-4 overflow-hidden ">
+      <div className=" container md:h-screen bg-neutral-content grid md:grid-cols-2 gap-4 overflow-hidden ">
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         <button
           className="btn"
@@ -111,36 +120,58 @@ const Home = () => {
             </div>
           </div>
         </dialog>
-        <div className="grid justify-center h-3/4 overflow-y-scroll ">
-          {data.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm"
-              >
-                <h1>detail: {item.detail}</h1>
-                <h2>amount: {item.amount}</h2>
-                <h2>category: {item.category}</h2>
-                <h2>note: {item.note}</h2>
-                <h2>Date: {item.date}</h2>
-                <div className="flex justify-around">
-                    <button
-                  className="btn p-3 flex m-2 w-auto cursor-pointer text-white rounded-lg bg-blue-600"
-                  onClick={() => handleEdit(index)}
-                > Edit
-                </button>
-                <button
-                  type="button"
-                  className=" btn p-3 flex m-2 w-auto text-white cursor-pointer rounded-lg bg-red-600"
-                  onClick={() => handleDelete(index)}
+        <div className="md:h-3/4 border-0 m-2 bg-white rounded-lg shadow-lg p-4">
+          <h1 className="text-2xl bg-neutral text-neutral-content text-bold">
+            Recent Entries
+          </h1>
+          <div className="grid md:grid-cols-2 gap-3 p-3 justify-center md:h-3/4 overflow-y-scroll ">
+            {data.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="max-w-sm p-6 grid gap-3 bg-white border border-gray-200 rounded-lg shadow-sm"
                 >
-                  Delete
-                </button>
+                  <h2 className=" text-lg">
+                    Detail:{" "}
+                    <span className="font-medium text-neutral">
+                      {item.detail}
+                    </span>
+                  </h2>
+                  <h2>
+                    Amount:{" "}
+                    <span className="font-medium text-neutral">
+                      {item.amount}
+                    </span>
+                  </h2>
+                  <h2>
+                    Category:{" "}
+                    <span className="font-medium text-neutral">
+                      {item.category}
+                    </span>
+                  </h2>
+                  <h2>
+                    Note:{" "}
+                    <span className="font-medium text-neutral">
+                      {item.note}
+                    </span>
+                  </h2>
+                  <h2>
+                    Date:{" "}
+                    <span className="font-medium text-neutral">
+                      {item.date}
+                    </span>
+                  </h2>
+                  <button
+                    type="button"
+                    className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-600"
+                    onClick={() => handleDelete(index)}
+                  >
+                    Delete
+                  </button>
                 </div>
-                
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
