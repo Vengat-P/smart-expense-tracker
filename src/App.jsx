@@ -8,7 +8,9 @@ import PageNotFound from './Pages/PageNotFound';
 
 const App = () => {
 const { data } = useContext(userContext);
-useEffect(()=>{},[data])
+useEffect(()=>{
+  
+},[data])
   return (
     <>
       <div>

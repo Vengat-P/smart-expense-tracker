@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "../Context/userContext";
+import BarChart from "../Components/BarChart";
 
 const Home = () => {
-  const { data, setData, formData, setFormData } = useContext(userContext);
-  const [status, setStatus] = useState(true);
-  useEffect(() => {}, [data, status]);
+  const { data, setData, formData, setFormData, food, bills, travel, others } =
+    useContext(userContext);
+  useEffect(() => {
+
+  }, [data]);
   const handleSubmit = async (e) => {
     document.getElementById("my_modal_1").close();
     e.preventDefault();
-    console.log(formData);
-    setFormData(() => {
-      data.push(formData);
-      localStorage.setItem("data", JSON.stringify(data));
+    data.push(formData);
+    localStorage.setItem("data", JSON.stringify(data));
+    setData(() => {
+      const storedData = localStorage.getItem("data");
+      return storedData ? JSON.parse(storedData) : [];
     });
     setFormData({
       detail: "",
@@ -20,8 +24,7 @@ const Home = () => {
       date: "",
       note: "",
     });
-
-    console.log(data);
+    
   };
   const handleDelete = (key) => {
     data.splice(key, 1);
@@ -31,16 +34,71 @@ const Home = () => {
       return storedData ? JSON.parse(storedData) : [];
     });
   };
+
+  // console.log(food);
+  // console.log(travel);
+  // console.log(bills);
+  // console.log(others);
+
   return (
     <>
-      <div className=" container md:h-screen bg-neutral-content grid md:grid-cols-2 gap-4 overflow-hidden ">
+      <div className=" md:h-screen bg-neutral-content grid md:grid-cols-2 gap-4 overflow-hidden ">
         {/* Open the modal using document.getElementById('ID').showModal() method */}
-        <button
-          className="btn"
-          onClick={() => document.getElementById("my_modal_1").showModal()}
-        >
-          open modal
-        </button>
+        <div>
+        <div className="w-full md:h-80 lg:h-60 p-4 m-2 grid border-0 shadow-lg bg-gray-100 justify-center mx-auto ">
+          <button
+            className="btn mt-2 w-auto bg-neutral text-neutral-content text-lg"
+            onClick={() => document.getElementById("my_modal_1").showModal()}
+          >
+            Add new Entry
+          </button>
+          <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+            Total Spent Amount is :
+            <span className="text-neutral ml-3">
+              {data.reduce((sum, item) => {
+                return sum + parseInt(`${item.amount}`);
+              }, 0)}
+            </span>
+          </h1>
+          <div className="sm:grid lg:flex gap-4 justify-between">
+            <h1 className="text-2xl font-bold text-red-500">
+              Food:
+              <span className="text-neutral ml-3">
+                {food.reduce((sum, item) => {
+                  return sum + parseInt(`${item.amount}`);
+                }, 0)}
+              </span>
+            </h1>
+            <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+              Travel:
+              <span className="text-neutral ml-3">
+                {travel.reduce((sum, item) => {
+                  return sum + parseInt(`${item.amount}`);
+                }, 0)}
+              </span>
+            </h1>
+            <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+              Bills:
+              <span className="text-neutral ml-3">
+                {bills.reduce((sum, item) => {
+                  return sum + parseInt(`${item.amount}`);
+                }, 0)}
+              </span>
+            </h1>
+            <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+              Others:
+              <span className="text-neutral ml-3">
+                {others.reduce((sum, item) => {
+                  return sum + parseInt(`${item.amount}`);
+                }, 0)}
+              </span>
+            </h1>
+          </div>
+        </div>
+        <div className="sm:w-full  md:w-3/4  mx-auto ">
+          <BarChart/>
+        </div>
+        </div>
         <dialog id="my_modal_1" className="modal">
           <div className="modal-box">
             <div className="modal-action">
@@ -120,16 +178,57 @@ const Home = () => {
             </div>
           </div>
         </dialog>
-        <div className="md:h-3/4 border-0 m-2 bg-white rounded-lg shadow-lg p-4">
-          <h1 className="text-2xl bg-neutral text-neutral-content text-bold">
+        <div className="md:h-3/4 border-0 m-2  bg-gray-100 rounded-lg shadow-lg p-4">
+          <h1 className="text-2xl bg-neutral text-neutral-content text-center text-bold">
             Recent Entries
           </h1>
-          <div className="grid md:grid-cols-2 gap-3 p-3 justify-center md:h-3/4 overflow-y-scroll ">
+          <div className=" flex justify-between">
+            <button className="flex cursor-pointer">
+              <span>sort</span>
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 20V10m0 10-3-3m3 3 3-3m5-13v10m0-10 3 3m-3-3-3 3"
+                />
+              </svg>
+            </button>
+            <button className="flex cursor-pointer">
+              <span>filter</span>
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth={2}
+                  d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div className="grid md:grid-cols-2 gap-3 p-6 justify-center md:h-3/4  mb-3  overflow-y-scroll ">
             {data.map((item, index) => {
               return (
                 <div
                   key={index}
-                  className="max-w-sm p-6 grid gap-3 bg-white border border-gray-200 rounded-lg shadow-sm"
+                  className="max-w-sm p-6 grid gap-2 bg-white border border-gray-200 rounded-lg shadow-sm"
                 >
                   <h2 className=" text-lg">
                     Detail:{" "}
@@ -163,7 +262,7 @@ const Home = () => {
                   </h2>
                   <button
                     type="button"
-                    className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-600"
+                    className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-500"
                     onClick={() => handleDelete(index)}
                   >
                     Delete
