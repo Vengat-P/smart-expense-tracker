@@ -52,7 +52,7 @@ Create a smart expense tracking application using **React JS** that allows users
 
 ## Demo
 
--
+- https://smartexpensetracker3.netlify.app/
 
 ## Authors
 

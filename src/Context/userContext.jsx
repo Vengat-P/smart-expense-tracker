@@ -68,7 +68,7 @@ const UserProvider = ({ children }) => {
       }, 0);
       const otherAmount = others.reduce((sum, item) => {
         return sum + parseInt(`${item.amount}`);
-      }, 100);
+      }, 0);
       setFood(foodFilter);
       setBills(billsFilter);
       setTravel(travelFilter);
