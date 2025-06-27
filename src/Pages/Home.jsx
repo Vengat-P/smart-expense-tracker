@@ -13,11 +13,14 @@ const Home = () => {
     travel,
     others,
     chartData,
+    handleChange,
+    handleDate,
+    showActive,
+    activeData,
+    value,
   } = useContext(userContext);
   const [status, setStatus] = useState(true);
-  useEffect(() => {
-
-  }, [data]);
+  useEffect(() => {}, [data]);
   const handleSubmit = async (e) => {
     document.getElementById("my_modal_1").close();
     e.preventDefault();
@@ -186,12 +189,12 @@ const Home = () => {
           <h1 className="text-2xl bg-neutral rounded-md text-neutral-content text-center text-bold">
             Recent Entries
           </h1>
-          <div className=" flex justify-between">
+          <div className=" flex justify-around">
             <button
               onClick={() => setStatus(status ? false : true)}
-              className="flex cursor-pointer"
+              className="flex cursor-pointer justify-center items-center"
             >
-              <span>{status ?  "Recent" :"Highest" }</span>
+              <span>{status ? "Recent" : "Highest"}</span>
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -210,8 +213,41 @@ const Home = () => {
                 />
               </svg>
             </button>
-            <button className="flex cursor-pointer">
-              <span>filter</span>
+            <button
+              // onClick={() => setStatus(undefined)}
+              className=" dropdown dropdown-start flex justify-center items-center cursor-pointer "
+            >
+              <div tabIndex={0} role="button" className="btn m-1">
+                Filter
+              </div>
+              <form
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+              >
+                <div className="">
+                  <select
+                    value={value}
+                    required
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    className="border p-2 mt-2 mb-4 rounded w-full"
+                  >
+                    <option value="data">All</option>
+                    <option value="food">Food</option>
+                    <option value="travel">Travel</option>
+                    <option value="bills">Bills</option>
+                    <option value="others">Others</option>
+                  </select>
+                  <input
+                    type="date"
+                    className="w-full p-3 mb-4 cursor-pointer border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => {
+                      handleDate(e);
+                    }}
+                  />
+                </div>
+              </form>
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -232,7 +268,7 @@ const Home = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-3 p-6 justify-center md:h-3/4  mb-3  overflow-y-scroll ">
             {status
-              ? data
+              ? (showActive ? activeData : data)
                   .map((item, index) => {
                     return (
                       <div
@@ -280,7 +316,7 @@ const Home = () => {
                     );
                   })
                   .reverse()
-              : data
+              : (showActive ? activeData : data)
                   .toSorted((a, b) => b.amount - a.amount)
                   .map((item, index) => {
                     return (
@@ -331,6 +367,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div></div>
     </>
   );
 };
