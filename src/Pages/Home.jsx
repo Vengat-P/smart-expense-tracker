@@ -18,6 +18,7 @@ const Home = () => {
     showActive,
     activeData,
     value,
+    handleRange,
   } = useContext(userContext);
   const [status, setStatus] = useState(true);
   useEffect(() => {}, [data]);
@@ -213,10 +214,7 @@ const Home = () => {
                 />
               </svg>
             </button>
-            <button
-              // onClick={() => setStatus(undefined)}
-              className=" dropdown dropdown-start flex justify-center items-center cursor-pointer "
-            >
+            <button className=" dropdown dropdown-center flex  cursor-pointer ">
               <div tabIndex={0} role="button" className="btn m-1">
                 Filter
               </div>
@@ -246,6 +244,33 @@ const Home = () => {
                       handleDate(e);
                     }}
                   />
+                  <div className="w-full max-w-xs">
+                    <input
+                      type="range"
+                      min={0}
+                      max="2500"
+                      value={value}
+                      onChange={(e) => {
+                        handleRange(e);
+                      }}
+                      className="range range-error"
+                      step="500"
+                    />
+                    <div className="flex justify-between px-2.5 mt-2 text-xs">
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                      <span>|</span>
+                    </div>
+                    <div className="flex justify-between px-2.5 mt-2 font-semibold text-xs">
+                      <span>0{"<"}</span>
+                      <span>500{"<"}</span>
+                      <span>1k{"<"}</span>
+                      <span>1.5k{"<"}</span>
+                      <span>2k{"<"}</span>
+                    </div>
+                  </div>
                 </div>
               </form>
               <svg

@@ -123,6 +123,20 @@ const UserProvider = ({ children }) => {
     // console.log(filterDate);
     setActiveData(filterDate);
   };
+  const handleRange = (e)=>{
+    setShowActive(true)
+    const filterRange = data.filter((item)=>{
+      if(  e.target.value <= parseInt(item.amount)){
+        return true
+      }
+      else{
+        return false
+      }
+     
+    })
+    setValue(e.target.value)
+     setActiveData(filterRange)
+  }
 
   return (
     <userContext.Provider
@@ -142,7 +156,8 @@ const UserProvider = ({ children }) => {
         handleDate,
         showActive,
         activeData,
-        value
+        value,
+        handleRange
       }}
     >
       {children}
