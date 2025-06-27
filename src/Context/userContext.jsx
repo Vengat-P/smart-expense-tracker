@@ -17,7 +17,19 @@ const UserProvider = ({ children }) => {
   const [travel, setTravel] = useState([]);
   const [bills, setBills] = useState([]);
   const [others, setOthers] = useState([]);
- 
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Spent amount ",
+        data: [],
+        backgroundColor: [],
+        borderColor: "rgba(0, 0, 0, 1)",
+        borderWidth: 1,
+      },
+    ],
+  });
+
   useEffect(() => {
     const foodFilter = data.filter((item) => {
       if (item.category === "food") {
@@ -39,12 +51,36 @@ const UserProvider = ({ children }) => {
         return item;
       }
     });
+    const foodAmount = food.reduce((sum, item) => {
+      return sum + parseInt(`${item.amount}`);
+    }, 0);
+    const travelAmount = travel.reduce((sum, item) => {
+      return sum + parseInt(`${item.amount}`);
+    }, 0);
+    const billsAmount = bills.reduce((sum, item) => {
+      return sum + parseInt(`${item.amount}`);
+    }, 0);
+    const otherAmount = others.reduce((sum, item) => {
+      return sum + parseInt(`${item.amount}`);
+    }, 0);
+
     setFood(foodFilter);
     setBills(billsFilter);
     setTravel(travelFilter);
     setOthers(othersFilter);
-  }, [data]);
- 
+    setChartData({
+      labels: ["Food", "Travel", "Bills", "Others"],
+      datasets: [
+        {
+          label: "Spent Amount",
+          data: [foodAmount, travelAmount, billsAmount, otherAmount],
+          backgroundColor: ["rgba(255, 0, 0, 0.7)"],
+          borderColor: "rgba(0, 0, 0, 1)",
+          borderWidth: 1,
+        },
+      ],
+    });
+  }, [data, food, bills, travel, others]);
 
   return (
     <userContext.Provider
@@ -57,6 +93,7 @@ const UserProvider = ({ children }) => {
         bills,
         travel,
         others,
+        chartData,
       }}
     >
       {children}

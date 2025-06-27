@@ -3,11 +3,18 @@ import { userContext } from "../Context/userContext";
 import BarChart from "../Components/BarChart";
 
 const Home = () => {
-  const { data, setData, formData, setFormData, food, bills, travel, others } =
-    useContext(userContext);
-  useEffect(() => {
-
-  }, [data]);
+  const {
+    data,
+    setData,
+    formData,
+    setFormData,
+    food,
+    bills,
+    travel,
+    others,
+    chartData,
+  } = useContext(userContext);
+  useEffect(() => {}, [data]);
   const handleSubmit = async (e) => {
     document.getElementById("my_modal_1").close();
     e.preventDefault();
@@ -24,7 +31,6 @@ const Home = () => {
       date: "",
       note: "",
     });
-    
   };
   const handleDelete = (key) => {
     data.splice(key, 1);
@@ -35,69 +41,64 @@ const Home = () => {
     });
   };
 
-  // console.log(food);
-  // console.log(travel);
-  // console.log(bills);
-  // console.log(others);
-
   return (
     <>
       <div className=" md:h-screen bg-neutral-content grid md:grid-cols-2 gap-4 overflow-hidden ">
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         <div>
-        <div className="w-full md:h-80 lg:h-60 p-4 m-2 grid border-0 shadow-lg bg-gray-100 justify-center mx-auto ">
-          <button
-            className="btn mt-2 w-auto bg-neutral text-neutral-content text-lg"
-            onClick={() => document.getElementById("my_modal_1").showModal()}
-          >
-            Add new Entry
-          </button>
-          <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
-            Total Spent Amount is :
-            <span className="text-neutral ml-3">
-              {data.reduce((sum, item) => {
-                return sum + parseInt(`${item.amount}`);
-              }, 0)}
-            </span>
-          </h1>
-          <div className="sm:grid lg:flex gap-4 justify-between">
-            <h1 className="text-2xl font-bold text-red-500">
-              Food:
-              <span className="text-neutral ml-3">
-                {food.reduce((sum, item) => {
-                  return sum + parseInt(`${item.amount}`);
-                }, 0)}
-              </span>
-            </h1>
+          <div className="w-full md:h-80 lg:h-60 p-4 m-2 grid border-0 shadow-lg bg-gray-100 justify-center mx-auto ">
+            <button
+              className="btn mt-2 w-auto bg-neutral text-neutral-content rounded-md text-lg"
+              onClick={() => document.getElementById("my_modal_1").showModal()}
+            >
+              Add new Entry
+            </button>
             <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
-              Travel:
+              Total Spent Amount is :
               <span className="text-neutral ml-3">
-                {travel.reduce((sum, item) => {
+                {data.reduce((sum, item) => {
                   return sum + parseInt(`${item.amount}`);
                 }, 0)}
               </span>
             </h1>
-            <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
-              Bills:
-              <span className="text-neutral ml-3">
-                {bills.reduce((sum, item) => {
-                  return sum + parseInt(`${item.amount}`);
-                }, 0)}
-              </span>
-            </h1>
-            <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
-              Others:
-              <span className="text-neutral ml-3">
-                {others.reduce((sum, item) => {
-                  return sum + parseInt(`${item.amount}`);
-                }, 0)}
-              </span>
-            </h1>
+            <div className="sm:grid lg:flex gap-4 justify-between">
+              <h1 className="text-2xl font-bold text-red-500">
+                Food:
+                <span className="text-neutral ml-3">
+                  {food.reduce((sum, item) => {
+                    return sum + parseInt(`${item.amount}`);
+                  }, 0)}
+                </span>
+              </h1>
+              <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+                Travel:
+                <span className="text-neutral ml-3">
+                  {travel.reduce((sum, item) => {
+                    return sum + parseInt(`${item.amount}`);
+                  }, 0)}
+                </span>
+              </h1>
+              <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+                Bills:
+                <span className="text-neutral ml-3">
+                  {bills.reduce((sum, item) => {
+                    return sum + parseInt(`${item.amount}`);
+                  }, 0)}
+                </span>
+              </h1>
+              <h1 className="sm:text-xl md:text-2xl font-bold text-red-500">
+                Others:
+                <span className="text-neutral ml-3">
+                  {others.reduce((sum, item) => {
+                    return sum + parseInt(`${item.amount}`);
+                  }, 0)}
+                </span>
+              </h1>
+            </div>
           </div>
-        </div>
-        <div className="sm:w-full  md:w-3/4  mx-auto ">
-          <BarChart/>
-        </div>
+          <div className="sm:w-full  md:w-5/6 bg-gray-100 shadow-md rounded-lg p-4 mx-auto ">
+            <BarChart chartData={chartData} />
+          </div>
         </div>
         <dialog id="my_modal_1" className="modal">
           <div className="modal-box">
@@ -179,7 +180,7 @@ const Home = () => {
           </div>
         </dialog>
         <div className="md:h-3/4 border-0 m-2  bg-gray-100 rounded-lg shadow-lg p-4">
-          <h1 className="text-2xl bg-neutral text-neutral-content text-center text-bold">
+          <h1 className="text-2xl bg-neutral rounded-md text-neutral-content text-center text-bold">
             Recent Entries
           </h1>
           <div className=" flex justify-between">
