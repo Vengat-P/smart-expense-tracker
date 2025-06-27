@@ -14,7 +14,10 @@ const Home = () => {
     others,
     chartData,
   } = useContext(userContext);
-  useEffect(() => {}, [data]);
+  const [status, setStatus] = useState(true);
+  useEffect(() => {
+
+  }, [data]);
   const handleSubmit = async (e) => {
     document.getElementById("my_modal_1").close();
     e.preventDefault();
@@ -48,7 +51,7 @@ const Home = () => {
         <div>
           <div className="w-full md:h-80 lg:h-60 p-4 m-2 grid border-0 shadow-lg bg-gray-100 justify-center mx-auto ">
             <button
-              className="btn mt-2 w-auto bg-neutral text-neutral-content rounded-md text-lg"
+              className="btn mt-2 w-auto bg-neutral text-neutral-content hover:bg-gray-400 hover:text-black rounded-md text-lg"
               onClick={() => document.getElementById("my_modal_1").showModal()}
             >
               Add new Entry
@@ -184,8 +187,11 @@ const Home = () => {
             Recent Entries
           </h1>
           <div className=" flex justify-between">
-            <button className="flex cursor-pointer">
-              <span>sort</span>
+            <button
+              onClick={() => setStatus(status ? false : true)}
+              className="flex cursor-pointer"
+            >
+              <span>{status ?  "Recent" :"Highest" }</span>
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -225,52 +231,103 @@ const Home = () => {
             </button>
           </div>
           <div className="grid md:grid-cols-2 gap-3 p-6 justify-center md:h-3/4  mb-3  overflow-y-scroll ">
-            {data.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="max-w-sm p-6 grid gap-2 bg-white border border-gray-200 rounded-lg shadow-sm"
-                >
-                  <h2 className=" text-lg">
-                    Detail:{" "}
-                    <span className="font-medium text-neutral">
-                      {item.detail}
-                    </span>
-                  </h2>
-                  <h2>
-                    Amount:{" "}
-                    <span className="font-medium text-neutral">
-                      {item.amount}
-                    </span>
-                  </h2>
-                  <h2>
-                    Category:{" "}
-                    <span className="font-medium text-neutral">
-                      {item.category}
-                    </span>
-                  </h2>
-                  <h2>
-                    Note:{" "}
-                    <span className="font-medium text-neutral">
-                      {item.note}
-                    </span>
-                  </h2>
-                  <h2>
-                    Date:{" "}
-                    <span className="font-medium text-neutral">
-                      {item.date}
-                    </span>
-                  </h2>
-                  <button
-                    type="button"
-                    className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-500"
-                    onClick={() => handleDelete(index)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              );
-            })}
+            {status
+              ? data
+                  .map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="max-w-sm p-6 grid gap-2 bg-white border border-gray-200 rounded-lg shadow-sm"
+                      >
+                        <h2 className=" text-lg">
+                          Detail:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.detail}
+                          </span>
+                        </h2>
+                        <h2>
+                          Amount:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.amount}
+                          </span>
+                        </h2>
+                        <h2>
+                          Category:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.category}
+                          </span>
+                        </h2>
+                        <h2>
+                          Note:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.note}
+                          </span>
+                        </h2>
+                        <h2>
+                          Date:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.date}
+                          </span>
+                        </h2>
+                        <button
+                          type="button"
+                          className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-500"
+                          onClick={() => handleDelete(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    );
+                  })
+                  .reverse()
+              : data
+                  .toSorted((a, b) => b.amount - a.amount)
+                  .map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="max-w-sm p-6 grid gap-2 bg-white border border-gray-200 rounded-lg shadow-sm"
+                      >
+                        <h2 className=" text-lg">
+                          Detail:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.detail}
+                          </span>
+                        </h2>
+                        <h2>
+                          Amount:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.amount}
+                          </span>
+                        </h2>
+                        <h2>
+                          Category:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.category}
+                          </span>
+                        </h2>
+                        <h2>
+                          Note:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.note}
+                          </span>
+                        </h2>
+                        <h2>
+                          Date:{" "}
+                          <span className="font-medium text-neutral">
+                            {item.date}
+                          </span>
+                        </h2>
+                        <button
+                          type="button"
+                          className=" btn p-3 flex  w-auto text-white cursor-pointer rounded-lg bg-red-500"
+                          onClick={() => handleDelete(index)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    );
+                  })}
           </div>
         </div>
       </div>
