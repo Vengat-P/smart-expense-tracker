@@ -186,7 +186,7 @@ const Home = () => {
             </div>
           </div>
         </dialog>
-        <div className="md:h-3/4 border-0 my-2 mx-auto bg-gray-100 rounded-lg shadow-lg p-4">
+        <div className="md:h-3/4 border-0 m-2 bg-gray-100 rounded-lg shadow-lg p-4">
           <h1 className="text-2xl bg-neutral rounded-md text-neutral-content text-center text-bold">
             Recent Entries
           </h1>
